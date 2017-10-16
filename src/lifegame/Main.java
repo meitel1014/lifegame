@@ -10,5 +10,6 @@ public class Main{
 		System.out.print(System.identityHashCode(model2));
 		System.out.print(",Cols=" + model2.getCols());
 		System.out.println(",Rows=" + model2.getRows());
+
 	}
 }
