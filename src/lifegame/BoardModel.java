@@ -79,7 +79,7 @@ public class BoardModel{
 				continue;
 			}
 		}
-		//次世代の生存判定を記録
+		//次世代の生存判定を返す
 		if(cells[y][x]) {
 			if(alive==2||alive==3) {
 				return true;
