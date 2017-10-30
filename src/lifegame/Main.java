@@ -14,5 +14,8 @@ public class Main{
 		for (int i=0; i<12; ++i) {
 			model.next();
 		}
+		while (model.isUndoable()) {
+			model.undo();
+		}
 	}
 }

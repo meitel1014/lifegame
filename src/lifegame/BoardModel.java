@@ -3,10 +3,13 @@ package lifegame;
 import java.util.ArrayList;
 
 public class BoardModel{
+	public static final int HISTORYSIZE=32;
+	static int count=0;
 	private int cols;
 	private int rows;
 	private boolean[][] cells;
 	private ArrayList<BoardListener> listeners;
+	private ArrayList<boolean[][]> history;
 	private int dx[]= {-1,-1,-1,0,1,1,1,0};
 	private int dy[]= {-1,0,1,1,1,0,-1,-1};
 
@@ -15,6 +18,7 @@ public class BoardModel{
 		rows = r;
 		cells = new boolean[rows][cols];
 		listeners=new ArrayList<BoardListener>();
+		history=new ArrayList<boolean[][]>();
 	}
 
 	public int getCols(){
@@ -42,6 +46,8 @@ public class BoardModel{
 			System.out.println(out);
 			out="";
 		}
+		System.out.println(count);
+		count++;
 	}
 
 	private void fireUpdate() {
@@ -51,11 +57,13 @@ public class BoardModel{
 	}
 
 	public void changeCellState(int x,int y){// (x, y) で指定されたセルの状態を変更する．
+		record();
 		cells[y][x]=!cells[y][x];
 		fireUpdate();
 	}
 
 	public void next() {
+		record();
 		boolean[][] nextGen = new boolean[rows][cols];
 
 		for(int i = 0; i < rows; i++){
@@ -93,6 +101,31 @@ public class BoardModel{
 				return false;
 			}
 		}
+	}
+
+	private void record() {
+		if(history.size()==HISTORYSIZE) {
+			history.remove(0);
+		}
+		boolean[][] now=new boolean[rows][cols];
+		for(int y=0;y<rows;y++) {
+			for(int x=0;x<cols;x++) {
+				now[y][x]=cells[y][x];
+			}
+		}
+		history.add(now);
+	}
+
+	void undo() {
+		int back=history.size()-1;
+		cells=history.get(back);
+		history.remove(back);
+
+		fireUpdate();
+	}
+
+	boolean isUndoable() {
+		return !history.isEmpty();
 	}
 }
 
