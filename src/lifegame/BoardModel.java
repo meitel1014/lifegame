@@ -10,8 +10,7 @@ public class BoardModel{
 	private boolean[][] cells;
 	private ArrayList<BoardListener> listeners;
 	private ArrayList<boolean[][]> history;
-	private int dx[]= {-1,-1,-1,0,1,1,1,0};
-	private int dy[]= {-1,0,1,1,1,0,-1,-1};
+
 
 	public BoardModel(int c,int r){
 		cols = c;
@@ -76,6 +75,8 @@ public class BoardModel{
 		fireUpdate();
 	}
 
+	private int dx[]= {-1,-1,-1,0,1,1,1,0};
+	private int dy[]= {-1,0,1,1,1,0,-1,-1};
 	private boolean nextGenJudge(int y,int x) {
 		int alive=0;//周辺の生きているセルの数
 		for(int i=0;i<8;i++) {
