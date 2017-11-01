@@ -61,6 +61,10 @@ public class BoardModel{
 		fireUpdate();
 	}
 
+	boolean isAlive(int x, int y){
+		return cells[y][x];
+	}
+
 	public void next() {
 		record();
 		boolean[][] nextGen = new boolean[rows][cols];
@@ -75,10 +79,10 @@ public class BoardModel{
 		fireUpdate();
 	}
 
-	private int dx[]= {-1,-1,-1,0,1,1,1,0};
-	private int dy[]= {-1,0,1,1,1,0,-1,-1};
 	private boolean nextGenJudge(int y,int x) {
 		int alive=0;//周辺の生きているセルの数
+		final int dx[]= {-1,-1,-1,0,1,1,1,0};
+		final int dy[]= {-1,0,1,1,1,0,-1,-1};
 		for(int i=0;i<8;i++) {
 			try {
 				if(cells[y+dy[i]][x+dx[i]]) {
