@@ -1,14 +1,19 @@
 package lifegame;
 
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
-public class BoardView extends JPanel implements BoardListener{
+public class BoardView extends JPanel implements BoardListener,MouseListener, MouseMotionListener{
 	BoardModel model;
 
 	public BoardView(BoardModel model) {
 		this.model=model;
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 	}
 
 	@Override
@@ -55,4 +60,28 @@ public class BoardView extends JPanel implements BoardListener{
 	public void updated(BoardModel m) {
 		this.repaint();
 	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	public void mouseMoved(MouseEvent e) {}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO 自動生成されたメソッド・スタブ
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		System.out.println("Pressed: " + e.getX() + ", " + e.getY());
+	}
+
+	public void mouseReleased(MouseEvent e) {}
+
+	public void mouseEntered(MouseEvent e) {}
+
+	public void mouseExited(MouseEvent e) {}
 }

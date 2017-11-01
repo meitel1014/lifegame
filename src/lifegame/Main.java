@@ -38,8 +38,6 @@ public class Main implements Runnable {
 		base.add(view, BorderLayout.CENTER);
 		model.addListener(view);
 
-
-
 		JPanel buttonPanel = new JPanel(); // ボタン用パネルを作成し
 		base.add(buttonPanel, BorderLayout.SOUTH); // base の下端に配置する
 		buttonPanel.setLayout(new FlowLayout()); // java.awt.FlowLayout を設定
