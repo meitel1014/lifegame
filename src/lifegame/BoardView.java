@@ -8,10 +8,10 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 public class BoardView extends JPanel implements BoardListener,MouseListener, MouseMotionListener{
-	BoardModel model;
+	BoardModel m;
 
 	public BoardView(BoardModel model) {
-		this.model=model;
+		this.m=model;
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 	}
@@ -21,39 +21,59 @@ public class BoardView extends JPanel implements BoardListener,MouseListener, Mo
 		super.paint(g);
 
 		//縦線を引く
-		for(int x=0;x<=model.getCols();x++) {
-			g.drawLine(x*boxWidth(), 0, x*boxWidth(), boxHeight()*model.getRows());
+		for(int x=0;x<=m.getCols();x++) {
+			g.drawLine(getXOnWindow(x), dy(), getXOnWindow(x), boxHeight()*m.getRows()+dy());
 		}
 
 		//横線を引く
-		for(int y=0;y<=model.getRows();y++) {
-			g.drawLine(0, y*boxHeight(), boxWidth()*model.getCols(), y*boxHeight());
+		for(int y=0;y<=m.getRows();y++) {
+			g.drawLine(dx(), getYOnWindow(y), boxWidth()*m.getCols()+dx(), getYOnWindow(y));
 		}
 
 		//各マスが生きていれば塗る
-		for(int i=0;i<model.getRows();i++) {
-			for(int j=0;j<model.getCols();j++) {
-				if(model.isAlive(i,j)) {
-					g.fillRect(getX(j),getY(i),boxWidth(),boxHeight());
+		for(int i=0;i<m.getRows();i++) {
+			for(int j=0;j<m.getCols();j++) {
+				if(m.isAlive(j,i)) {
+					g.fillRect(getXOnWindow(j),getYOnWindow(i),boxWidth(),boxHeight());
 				}
 			}
 		}
 	}
 
 	private int boxWidth() {
-		return getWidth()/model.getCols();
+		return getWidth()/m.getCols();
 	}
 
 	private int boxHeight() {
-		return getHeight()/model.getRows();
+		return getHeight()/m.getRows();
 	}
 
-	private int getX(int x) {
-		return x*boxWidth();
+	//盤面を画面中央に寄せるためx,y座標を端からずらす
+	//x座標の左端からのずれ
+	private int dx() {
+		return (getWidth()%m.getCols())/2;
+	}
+	//ｙ座標の上端からのずれ
+	private int dy() {
+		return (getHeight()%m.getRows())/2;
 	}
 
-	private int getY(int y) {
-		return y*boxHeight();
+	//左からx番目のマスの画面上でのx座標
+	private int getXOnWindow(int x) {
+		return x*boxWidth()+dx();
+	}
+	//上からy番目のマスの画面上でのy座標
+	private int getYOnWindow(int y) {
+		return y*boxHeight()+dy();
+	}
+
+	//画面上でのx座標が左から何番目のマスにあるか
+	private int getXOnBoard(int x) {
+		return (x-dx())/boxWidth();
+	}
+	//画面上でのy座標が上から何番目のマスにあるか
+	private int getYOnBoard(int y) {
+		return (y-dy())/boxHeight();
 	}
 
 	@Override
@@ -61,27 +81,47 @@ public class BoardView extends JPanel implements BoardListener,MouseListener, Mo
 		this.repaint();
 	}
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
-
+	int prevX=-1;
+	int prevY=-1;
+	private enum PrevEvent{PRESS,DRAG}
+	PrevEvent prevEvent;
+	private void mouseRecord(int x,int y, PrevEvent e) {
+		prevX=getXOnBoard(x);
+		prevY=getYOnBoard(y);
+		prevEvent=e;
 	}
 
-	public void mouseMoved(MouseEvent e) {}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
+	private boolean isOutOfBounds(int x,int y) {
+		if(x<dx()||y<dy()||x>=getWidth()-dx()||y>=getHeight()-dy()) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("Pressed: " + e.getX() + ", " + e.getY());
+		if(isOutOfBounds(e.getX(),e.getY())){
+			return;
+		}
+		m.changeCellState(getXOnBoard(e.getX()), getYOnBoard(e.getY()));
+		mouseRecord(e.getX(),e.getY(),PrevEvent.PRESS);
 	}
 
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if(isOutOfBounds(e.getX(),e.getY())){
+			return;
+		}
+
+		if(prevX!=getXOnBoard(e.getX())||prevY!=getYOnBoard(e.getY())) {
+			m.changeCellState(getXOnBoard(e.getX()), getYOnBoard(e.getY()));
+		}
+		mouseRecord(e.getX(),e.getY(),PrevEvent.DRAG);
+	}
+
+	public void mouseMoved(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
-
 	public void mouseEntered(MouseEvent e) {}
-
 	public void mouseExited(MouseEvent e) {}
 }

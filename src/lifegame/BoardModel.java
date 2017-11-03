@@ -3,14 +3,12 @@ package lifegame;
 import java.util.ArrayList;
 
 public class BoardModel{
-	public static final int HISTORYSIZE=32;
-	static int count=0;
+	private static final int HISTORYSIZE=32;
 	private int cols;
 	private int rows;
 	private boolean[][] cells;
 	private ArrayList<BoardListener> listeners;
 	private ArrayList<boolean[][]> history;
-
 
 	public BoardModel(int c,int r){
 		cols = c;
@@ -45,8 +43,6 @@ public class BoardModel{
 			System.out.println(out);
 			out="";
 		}
-		System.out.println(count);
-		count++;
 	}
 
 	private void fireUpdate() {
@@ -61,7 +57,7 @@ public class BoardModel{
 		fireUpdate();
 	}
 
-	boolean isAlive(int x, int y){
+	public boolean isAlive(int x, int y){
 		return cells[y][x];
 	}
 
@@ -121,7 +117,7 @@ public class BoardModel{
 		history.add(now);
 	}
 
-	void undo() {
+	public void undo() {
 		int back=history.size()-1;
 		cells=history.get(back);
 		history.remove(back);
@@ -129,7 +125,7 @@ public class BoardModel{
 		fireUpdate();
 	}
 
-	boolean isUndoable() {
+	public boolean isUndoable() {
 		return !history.isEmpty();
 	}
 }

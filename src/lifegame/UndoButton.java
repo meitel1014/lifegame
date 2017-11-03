@@ -12,6 +12,7 @@ public class UndoButton extends JButton implements ActionListener,BoardListener{
 		setText("Undo");
 		this.model=model;
 		this.addActionListener(this);
+		setEnabled(model.isUndoable());
 	}
 
 	@Override
