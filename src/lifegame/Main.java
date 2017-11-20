@@ -17,7 +17,7 @@ public class Main {
 	public static void newGame() {
 		games++;
 		// BoardModel の作成
-		BoardModel model=new BoardModel(102,100);
+		BoardModel model=new BoardModel(15,10);
 
 		JFrame frame=new JFrame();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

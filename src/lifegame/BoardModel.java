@@ -1,6 +1,7 @@
 package lifegame;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class BoardModel{
 	private static final int HISTORYSIZE=32;
@@ -8,14 +9,14 @@ public class BoardModel{
 	private int rows;
 	private boolean[][] cells;
 	private ArrayList<BoardListener> listeners;
-	private ArrayList<boolean[][]> history;
+	private LinkedList<boolean[][]> history;
 
 	public BoardModel(int c,int r){
 		cols = c;
 		rows = r;
 		cells = new boolean[rows][cols];
 		listeners=new ArrayList<BoardListener>();
-		history=new ArrayList<boolean[][]>();
+		history=new LinkedList<boolean[][]>();
 	}
 
 	public int getCols(){
@@ -30,21 +31,6 @@ public class BoardModel{
 		listeners.add(listener);
 	}
 
-	public void printForDebug(){
-		String out="";
-		for(int i = 0; i < rows; i++){
-			for(int j = 0; j < cols; j++){
-				if(cells[i][j]){
-					out+='*';
-				}else{
-					out+='.';
-				}
-			}
-			System.out.println(out);
-			out="";
-		}
-	}
-
 	private void fireUpdate() {
 		for(BoardListener listener:listeners) {
 			listener.updated(this);
@@ -53,6 +39,11 @@ public class BoardModel{
 
 	public void changeCellState(int x,int y){// (x, y) で指定されたセルの状態を変更する．
 		record();
+		cells[y][x]=!cells[y][x];
+		fireUpdate();
+	}
+
+	public void changeCellStateNoRecord(int x,int y){// 変更前を記録せずにセルの状態を変更する．
 		cells[y][x]=!cells[y][x];
 		fireUpdate();
 	}
@@ -106,7 +97,7 @@ public class BoardModel{
 
 	private void record() {
 		if(history.size()==HISTORYSIZE) {
-			history.remove(0);
+			history.removeFirst();
 		}
 		boolean[][] now=new boolean[rows][cols];
 		for(int y=0;y<rows;y++) {
@@ -118,10 +109,7 @@ public class BoardModel{
 	}
 
 	public void undo() {
-		int back=history.size()-1;
-		cells=history.get(back);
-		history.remove(back);
-
+		cells=history.removeLast();
 		fireUpdate();
 	}
 

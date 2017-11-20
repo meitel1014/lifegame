@@ -83,7 +83,7 @@ public class BoardView extends JPanel implements BoardListener,MouseListener, Mo
 
 	int prevX=-1;
 	int prevY=-1;
-	private enum PrevEvent{PRESS,DRAG}
+	private enum PrevEvent{PRESS,DRAG,RELEASE}
 	PrevEvent prevEvent;
 	private void mouseRecord(int x,int y, PrevEvent e) {
 		prevX=getXOnBoard(x);
@@ -92,10 +92,7 @@ public class BoardView extends JPanel implements BoardListener,MouseListener, Mo
 	}
 
 	private boolean isOutOfBounds(int x,int y) {
-		if(x<dx()||y<dy()||x>=getWidth()-dx()||y>=getHeight()-dy()) {
-			return true;
-		}
-		return false;
+		return x<dx()||y<dy()||x>=getWidth()-dx()||y>=getHeight()-dy();
 	}
 
 	@Override
@@ -113,10 +110,14 @@ public class BoardView extends JPanel implements BoardListener,MouseListener, Mo
 			return;
 		}
 
-		if(prevX!=getXOnBoard(e.getX())||prevY!=getYOnBoard(e.getY())) {
-			m.changeCellState(getXOnBoard(e.getX()), getYOnBoard(e.getY()));
+		if(isPrevCell(e.getX(),e.getY())) {
+			m.changeCellStateNoRecord(getXOnBoard(e.getX()), getYOnBoard(e.getY()));
 		}
 		mouseRecord(e.getX(),e.getY(),PrevEvent.DRAG);
+	}
+
+	private boolean isPrevCell(int x,int y) {
+		return prevX!=getXOnBoard(x)||prevY!=getYOnBoard(y);
 	}
 
 	public void mouseMoved(MouseEvent e) {}
