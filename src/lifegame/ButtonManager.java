@@ -38,18 +38,13 @@ public class ButtonManager implements ActionListener, BoardListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "New Game":
-			Main.newGame();
+			Main.main(null);
 			break;
 		case "Next":
 			model.next();
 			break;
 		case "Undo":
 			model.undo();
-			break;
-		case "OK":
-			break;
-		case "Cancel":
-			
 			break;
 		default:
 			System.out.println("Button error");
