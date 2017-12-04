@@ -46,6 +46,11 @@ public class ButtonManager implements ActionListener, BoardListener {
 		case "Undo":
 			model.undo();
 			break;
+		case "OK":
+			break;
+		case "Cancel":
+			
+			break;
 		default:
 			System.out.println("Button error");
 		}
