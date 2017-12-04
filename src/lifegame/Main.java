@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -33,16 +34,17 @@ public class Main {
 		base.add(view, BorderLayout.CENTER);
 		model.addListener(view);
 
+
 		JPanel buttonPanel = new JPanel(); // ボタン用パネルを作成し
 		base.add(buttonPanel, BorderLayout.SOUTH); // base の下端に配置する
 		buttonPanel.setLayout(new FlowLayout()); // java.awt.FlowLayout を設定
-		NewGameButton newGameButton=new NewGameButton();
-		NextButton nextButton=new NextButton(model);
-		UndoButton undoButton=new UndoButton(model);
-		buttonPanel.add(newGameButton);
-		buttonPanel.add(nextButton);
-		buttonPanel.add(undoButton);
-		model.addListener(undoButton);
+		ButtonManager buttons=new ButtonManager(model,buttonPanel);	
+		model.addListener(buttons);
+		String[] buttonNames= {"New Game","Next","Undo"};
+		for(String name:buttonNames) {
+			buttons.add(name);
+		}
+		
 
 		frame.pack();// ウィンドウに乗せたものの配置を確定する
 		frame.setVisible(true);// ウィンドウを表示する
