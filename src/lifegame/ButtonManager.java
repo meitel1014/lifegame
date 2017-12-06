@@ -2,13 +2,15 @@ package lifegame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
-public class ButtonManager implements ActionListener, BoardListener{
+public class ButtonManager implements ActionListener, BoardListener, WindowListener{
 	private BoardModel model;
 	private JPanel buttonPanel;
 	private JSlider slider;
@@ -20,6 +22,7 @@ public class ButtonManager implements ActionListener, BoardListener{
 		this.buttonPanel = panel;
 		buttons = new HashMap<String, JButton>();
 		this.slider = slider;
+
 	}
 
 	public void add(String label){
@@ -34,7 +37,7 @@ public class ButtonManager implements ActionListener, BoardListener{
 	}
 
 	@Override
-	public void updated(BoardModel m){
+	public synchronized void updated(BoardModel m){
 		buttons.get("Undo").setEnabled(model.isUndoable());
 	}
 
@@ -75,4 +78,29 @@ public class ButtonManager implements ActionListener, BoardListener{
 			System.out.println("Button error");
 		}
 	}
+
+	@Override
+	public void windowOpened(WindowEvent e){}
+
+	@Override
+	public void windowClosing(WindowEvent e){
+		if(auto != null){
+			auto.interrupt();
+		}
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e){}
+
+	@Override
+	public void windowIconified(WindowEvent e){}
+
+	@Override
+	public void windowDeiconified(WindowEvent e){}
+
+	@Override
+	public void windowActivated(WindowEvent e){}
+
+	@Override
+	public void windowDeactivated(WindowEvent e){}
 }

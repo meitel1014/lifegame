@@ -32,4 +32,5 @@ public class AutoRunner extends Thread implements ChangeListener{
 	public synchronized void stateChanged(ChangeEvent e){
 		period = 1000 - slider.getValue();
 	}
+
 }

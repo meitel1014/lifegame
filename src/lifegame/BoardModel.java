@@ -37,13 +37,14 @@ public class BoardModel{
 		}
 	}
 
-	public void changeCellState(int x, int y){// (x, y) で指定されたセルの状態を変更する．
+	public synchronized void changeCellState(int x, int y){// (x, y)
+															// で指定されたセルの状態を変更する．
 		record();
 		cells[y][x] = !cells[y][x];
 		fireUpdate();
 	}
 
-	public void changeCellStateNoRecord(int x, int y){// 変更前を記録せずにセルの状態を変更する．
+	public synchronized void changeCellStateNoRecord(int x, int y){// 変更前を記録せずにセルの状態を変更する．
 		cells[y][x] = !cells[y][x];
 		fireUpdate();
 	}
@@ -52,7 +53,7 @@ public class BoardModel{
 		return cells[y][x];
 	}
 
-	public void next(){
+	public synchronized void next(){
 		record();
 		boolean[][] nextGen = new boolean[rows][cols];
 
@@ -95,7 +96,7 @@ public class BoardModel{
 		}
 	}
 
-	private void record(){
+	private synchronized void record(){
 		if(history.size() == HISTORYSIZE){
 			history.removeFirst();
 		}
@@ -108,7 +109,7 @@ public class BoardModel{
 		history.add(now);
 	}
 
-	public void undo(){
+	public synchronized void undo(){
 		cells = history.removeLast();
 		fireUpdate();
 	}
