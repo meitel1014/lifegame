@@ -7,6 +7,9 @@ public class Initializer {
 
 	public boolean initialize() {
 		String rowst = JOptionPane.showInputDialog("Rows:", "15");
+		if(rowst==null) {
+			return false;
+		}
 		try{
 			rows = Integer.parseInt(rowst);
 			if(rows <= 0){
@@ -19,6 +22,9 @@ public class Initializer {
 		}
 
 		String colst = JOptionPane.showInputDialog("Cols:", "10");
+		if(colst==null) {
+			return false;
+		}
 		try{
 			cols = Integer.parseInt(colst);
 			if(cols <= 0){

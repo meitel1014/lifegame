@@ -6,16 +6,20 @@ import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 
 public class ButtonManager implements ActionListener, BoardListener {
-	BoardModel model;
-	JPanel buttonPanel;
+	private BoardModel model;
+	private JPanel buttonPanel;
+	private JSlider slider;
 	private HashMap<String, JButton> buttons;
+	private AutoRunner auto;
 
-	public ButtonManager(BoardModel model, JPanel panel) {
+	public ButtonManager(BoardModel model, JPanel panel,JSlider slider) {
 		this.model = model;
 		this.buttonPanel = panel;
 		buttons = new HashMap<String, JButton>();
+		this.slider=slider;
 	}
 
 	public void add(String label) {
@@ -45,6 +49,27 @@ public class ButtonManager implements ActionListener, BoardListener {
 			break;
 		case "Undo":
 			model.undo();
+			break;
+		case "Auto":
+			JButton autoButton=buttons.get("Auto");
+			autoButton.setText("Stop");
+			autoButton.setActionCommand("Stop");
+			buttons.put("Stop", autoButton);
+			buttons.remove("Auto");
+			
+			auto=new AutoRunner(model,slider);
+			auto.start();
+			
+			break;
+		case "Stop":
+			JButton stopButton=buttons.get("Stop");
+			stopButton.setText("Auto");
+			stopButton.setActionCommand("Auto");
+			buttons.put("Auto", stopButton);
+			buttons.remove("Stop");
+			
+			auto.interrupt();
+			
 			break;
 		default:
 			System.out.println("Button error");
