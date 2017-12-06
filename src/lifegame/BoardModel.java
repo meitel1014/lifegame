@@ -37,8 +37,7 @@ public class BoardModel{
 		}
 	}
 
-	public synchronized void changeCellState(int x, int y){// (x, y)
-															// で指定されたセルの状態を変更する．
+	public synchronized void changeCellState(int x, int y){
 		record();
 		cells[y][x] = !cells[y][x];
 		fireUpdate();
@@ -100,6 +99,7 @@ public class BoardModel{
 		if(history.size() == HISTORYSIZE){
 			history.removeFirst();
 		}
+
 		boolean[][] now = new boolean[rows][cols];
 		for(int y = 0; y < rows; y++){
 			for(int x = 0; x < cols; x++){

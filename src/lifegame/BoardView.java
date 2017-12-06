@@ -8,7 +8,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 public class BoardView extends JPanel implements BoardListener, MouseListener, MouseMotionListener{
-	BoardModel m;
+	private BoardModel m;
 
 	public BoardView(BoardModel model){
 		this.m = model;
@@ -84,13 +84,12 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 		this.repaint();
 	}
 
-	int prevX = -1;
-	int prevY = -1;
+	private int prevX = -1;
+	private int prevY = -1;
 
 	private enum PrevEvent{
 		PRESS, DRAG, RELEASE
 	}
-
 	PrevEvent prevEvent;
 
 	private void mouseRecord(int x, int y, PrevEvent e){
@@ -129,12 +128,8 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 	}
 
 	public void mouseMoved(MouseEvent e){}
-
 	public void mouseClicked(MouseEvent e){}
-
 	public void mouseReleased(MouseEvent e){}
-
 	public void mouseEntered(MouseEvent e){}
-
 	public void mouseExited(MouseEvent e){}
 }

@@ -80,27 +80,16 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 	}
 
 	@Override
-	public void windowOpened(WindowEvent e){}
-
-	@Override
 	public void windowClosing(WindowEvent e){
 		if(auto != null){
 			auto.interrupt();
 		}
 	}
 
-	@Override
+	public void windowOpened(WindowEvent e){}
 	public void windowClosed(WindowEvent e){}
-
-	@Override
 	public void windowIconified(WindowEvent e){}
-
-	@Override
 	public void windowDeiconified(WindowEvent e){}
-
-	@Override
 	public void windowActivated(WindowEvent e){}
-
-	@Override
 	public void windowDeactivated(WindowEvent e){}
 }
