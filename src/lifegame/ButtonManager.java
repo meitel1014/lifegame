@@ -8,39 +8,39 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
-public class ButtonManager implements ActionListener, BoardListener {
+public class ButtonManager implements ActionListener, BoardListener{
 	private BoardModel model;
 	private JPanel buttonPanel;
 	private JSlider slider;
 	private HashMap<String, JButton> buttons;
 	private AutoRunner auto;
 
-	public ButtonManager(BoardModel model, JPanel panel,JSlider slider) {
+	public ButtonManager(BoardModel model, JPanel panel, JSlider slider){
 		this.model = model;
 		this.buttonPanel = panel;
 		buttons = new HashMap<String, JButton>();
-		this.slider=slider;
+		this.slider = slider;
 	}
 
-	public void add(String label) {
+	public void add(String label){
 		JButton button = new JButton(label);
 		button.setActionCommand(label);
 		button.addActionListener(this);
 		buttons.put(label, button);
 		buttonPanel.add(button);
-		if (label.equals("Undo")) {
+		if(label.equals("Undo")){
 			button.setEnabled(model.isUndoable());
 		}
 	}
 
 	@Override
-	public void updated(BoardModel m) {
+	public void updated(BoardModel m){
 		buttons.get("Undo").setEnabled(model.isUndoable());
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		switch (e.getActionCommand()) {
+	public void actionPerformed(ActionEvent e){
+		switch(e.getActionCommand()){
 		case "New Game":
 			Main.main(null);
 			break;
@@ -51,25 +51,25 @@ public class ButtonManager implements ActionListener, BoardListener {
 			model.undo();
 			break;
 		case "Auto":
-			JButton autoButton=buttons.get("Auto");
+			JButton autoButton = buttons.get("Auto");
 			autoButton.setText("Stop");
 			autoButton.setActionCommand("Stop");
 			buttons.put("Stop", autoButton);
 			buttons.remove("Auto");
-			
-			auto=new AutoRunner(model,slider);
+
+			auto = new AutoRunner(model, slider);
 			auto.start();
-			
+
 			break;
 		case "Stop":
-			JButton stopButton=buttons.get("Stop");
+			JButton stopButton = buttons.get("Stop");
 			stopButton.setText("Auto");
 			stopButton.setActionCommand("Auto");
 			buttons.put("Auto", stopButton);
 			buttons.remove("Stop");
-			
+
 			auto.interrupt();
-			
+
 			break;
 		default:
 			System.out.println("Button error");

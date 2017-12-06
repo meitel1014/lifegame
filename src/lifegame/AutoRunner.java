@@ -8,30 +8,28 @@ public class AutoRunner extends Thread implements ChangeListener{
 	private BoardModel model;
 	private JSlider slider;
 	private int period;
-	
-	public AutoRunner(BoardModel model,JSlider slider) {
-		this.model=model;
-		this.slider=slider;
+
+	public AutoRunner(BoardModel model, JSlider slider){
+		this.model = model;
+		this.slider = slider;
+		period = 1000 - slider.getValue();
 		slider.addChangeListener(this);
 	}
-	
+
 	@Override
-	public void run() {
-		while(true) {
-			try {
+	public void run(){
+		while(true){
+			try{
 				Thread.sleep(period);
 				model.next();
-			}catch(InterruptedException e) {
+			}catch(InterruptedException e){
 				break;
 			}
 		}
 	}
 
 	@Override
-	public void stateChanged(ChangeEvent e) {
-		period=1000-slider.getValue();
+	public void stateChanged(ChangeEvent e){
+		period = 1000 - slider.getValue();
 	}
-	
-	
-
 }

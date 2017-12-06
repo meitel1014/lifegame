@@ -2,12 +2,12 @@ package lifegame;
 
 import javax.swing.JOptionPane;
 
-public class Initializer {
-	private int rows,cols;
+public class Initializer{
+	private int rows, cols;
 
-	public boolean initialize() {
+	public boolean initialize(){
 		String rowst = JOptionPane.showInputDialog("Rows:", "15");
-		if(rowst==null) {
+		if(rowst == null){
 			return false;
 		}
 		try{
@@ -22,7 +22,7 @@ public class Initializer {
 		}
 
 		String colst = JOptionPane.showInputDialog("Cols:", "10");
-		if(colst==null) {
+		if(colst == null){
 			return false;
 		}
 		try{
@@ -39,11 +39,11 @@ public class Initializer {
 		return true;
 	}
 
-	public int getRows() {
+	public int getRows(){
 		return rows;
 	}
 
-	public int getCols() {
+	public int getCols(){
 		return cols;
 	}
 }
