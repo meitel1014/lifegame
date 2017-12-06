@@ -39,7 +39,7 @@ public class ButtonManager implements ActionListener, BoardListener{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e){
+	public synchronized void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
 		case "New Game":
 			Main.main(null);
