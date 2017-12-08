@@ -19,6 +19,14 @@ public class BoardModel{
 		history = new LinkedList<boolean[][]>();
 	}
 
+	public BoardModel(int c, int r, boolean[][] data){
+		cols = c;
+		rows = r;
+		cells = data;
+		listeners = new ArrayList<BoardListener>();
+		history = new LinkedList<boolean[][]>();
+	}
+
 	public int getCols(){
 		return cols;
 	}
@@ -109,6 +117,18 @@ public class BoardModel{
 		history.add(now);
 	}
 
+	public boolean[] output() {
+		boolean[] bin=new boolean[binSize()];
+
+		for(int i=0;i<rows;i++) {
+			for(int j=0;j<cols;j++) {
+				bin[i*rows+j]=cells[i][j];
+			}
+		}
+
+		return bin;
+	}
+
 	public synchronized void undo(){
 		cells = history.removeLast();
 		fireUpdate();
@@ -116,5 +136,9 @@ public class BoardModel{
 
 	public boolean isUndoable(){
 		return !history.isEmpty();
+	}
+
+	public int binSize() {
+		return 16+rows*cols;
 	}
 }
