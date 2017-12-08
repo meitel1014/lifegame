@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 public class Main implements Runnable{
 	private static int games = 0;
+	public String filename=null;
 
 	public static void main(String[] args){
 		SwingUtilities.invokeLater(new Main());
@@ -18,7 +19,7 @@ public class Main implements Runnable{
 
 	public void run(){
 		Initializer init = new Initializer();
-		if(!init.initialize()){
+		if(!init.initialize(filename)){
 			return;
 		}
 
@@ -37,6 +38,8 @@ public class Main implements Runnable{
 		BoardView view = new BoardView(model);
 		base.add(view, BorderLayout.CENTER);
 		model.addListener(view);
+
+		MenuManager menu=new MenuManager(frame,model);
 
 		JPanel buttonPanel = new JPanel(); // ボタン用パネルを作成し
 		base.add(buttonPanel, BorderLayout.SOUTH); // base の下端に配置する
