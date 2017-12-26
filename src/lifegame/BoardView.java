@@ -1,3 +1,4 @@
+
 package lifegame;
 
 import java.awt.Graphics;
@@ -22,61 +23,57 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 
 		// 縦線を引く
 		for(int x = 0; x <= m.getCols(); x++){
-			g.drawLine(getXOnWindow(x), dy(), getXOnWindow(x), boxHeight() * m.getRows() + dy());
+			g.drawLine(getXOnWindow(x), dy(), getXOnWindow(x), boxSize() * m.getRows() + dy());
 		}
 
 		// 横線を引く
 		for(int y = 0; y <= m.getRows(); y++){
-			g.drawLine(dx(), getYOnWindow(y), boxWidth() * m.getCols() + dx(), getYOnWindow(y));
+			g.drawLine(dx(), getYOnWindow(y), boxSize() * m.getCols() + dx(), getYOnWindow(y));
 		}
 
 		// 各マスが生きていれば塗る
 		for(int i = 0; i < m.getRows(); i++){
 			for(int j = 0; j < m.getCols(); j++){
 				if(m.isAlive(j, i)){
-					g.fillRect(getXOnWindow(j), getYOnWindow(i), boxWidth(), boxHeight());
+					g.fillRect(getXOnWindow(j), getYOnWindow(i), boxSize(), boxSize());
 				}
 			}
 		}
 	}
 
-	private int boxWidth(){
-		return getWidth() / m.getCols();
-	}
-
-	private int boxHeight(){
-		return getHeight() / m.getRows();
+	private int boxSize(){
+		return Math.min(getWidth() / m.getCols(), getHeight() / m.getRows());
 	}
 
 	// 盤面を画面中央に寄せるためx,y座標を端からずらす
 	// x座標の左端からのずれ
 	private int dx(){
-		return (getWidth() % m.getCols()) / 2;
+		return (getWidth() - (boxSize() * m.getCols())) / 2;
 	}
 
-	// ｙ座標の上端からのずれ
+	// y座標の上端からのずれ
 	private int dy(){
-		return (getHeight() % m.getRows()) / 2;
+		return (getHeight() - (boxSize() * m.getRows())) / 2;
 	}
 
 	// 左からx番目のマスの画面上でのx座標
 	private int getXOnWindow(int x){
-		return x * boxWidth() + dx();
+		return x * boxSize() + dx();
 	}
 
 	// 上からy番目のマスの画面上でのy座標
 	private int getYOnWindow(int y){
-		return y * boxHeight() + dy();
+		return y * boxSize() + dy();
 	}
 
 	// 画面上でのx座標が左から何番目のマスにあるか
 	private int getXOnBoard(int x){
-		return (x - dx()) / boxWidth();
+		return (x - dx()) / boxSize();
 	}
 
 	// 画面上でのy座標が上から何番目のマスにあるか
 	private int getYOnBoard(int y){
-		return (y - dy()) / boxHeight();
+		return (y - dy()) / boxSize();
 	}
 
 	@Override
@@ -90,6 +87,7 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 	private enum PrevEvent{
 		PRESS, DRAG, RELEASE
 	}
+
 	PrevEvent prevEvent;
 
 	private void mouseRecord(int x, int y, PrevEvent e){
