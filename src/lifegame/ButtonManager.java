@@ -57,19 +57,15 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 			JButton autoButton = buttons.get("Auto");
 			autoButton.setText("Stop");
 			autoButton.setActionCommand("Stop");
-			buttons.put("Stop", autoButton);
-			buttons.remove("Auto");
 
 			auto = new AutoRunner(model, slider);
 			auto.start();
 
 			break;
 		case "Stop":
-			JButton stopButton = buttons.get("Stop");
+			JButton stopButton = buttons.get("Auto");
 			stopButton.setText("Auto");
 			stopButton.setActionCommand("Auto");
-			buttons.put("Auto", stopButton);
-			buttons.remove("Stop");
 
 			auto.interrupt();
 

@@ -6,12 +6,12 @@ public class Initializer{
 	private int rows, cols;
 
 	public boolean initialize(){
-		String rowst = JOptionPane.showInputDialog("Rows:", "15");
-		if(rowst == null){
+		String rowInput = JOptionPane.showInputDialog("Rows:", "15");
+		if(rowInput == null){
 			return false;
 		}
 		try{
-			rows = Integer.parseInt(rowst);
+			rows = Integer.parseInt(rowInput);
 			if(rows <= 0){
 				throw new NumberFormatException();
 			}
@@ -21,12 +21,12 @@ public class Initializer{
 			return false;
 		}
 
-		String colst = JOptionPane.showInputDialog("Cols:", "10");
-		if(colst == null){
+		String colInput = JOptionPane.showInputDialog("Cols:", "10");
+		if(colInput == null){
 			return false;
 		}
 		try{
-			cols = Integer.parseInt(colst);
+			cols = Integer.parseInt(colInput);
 			if(cols <= 0){
 				throw new NumberFormatException();
 			}

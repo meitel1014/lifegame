@@ -41,6 +41,7 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 		}
 	}
 
+	//各セルの一辺の大きさ
 	private int boxSize(){
 		return Math.min(getWidth() / m.getCols(), getHeight() / m.getRows());
 	}

@@ -10,7 +10,6 @@ import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 
 public class Main implements Runnable{
-	private static int games = 0;
 
 	public static void main(String[] args){
 		SwingUtilities.invokeLater(new Main());
@@ -22,10 +21,8 @@ public class Main implements Runnable{
 			return;
 		}
 
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("Lifegame");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		games++;
-		frame.setTitle("Lifegame" + games);
 
 		BoardModel model = new BoardModel(init.getRows(), init.getCols());
 		JPanel base = new JPanel();
