@@ -16,6 +16,7 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 	private JSlider slider;
 	private HashMap<String, JButton> buttons;
 	private AutoRunner auto;
+	private String[] buttonNames = { "New Game", "Next", "Undo", "Auto" };
 
 	public ButtonManager(BoardModel model, JPanel panel, JSlider slider){
 		this.model = model;
@@ -23,6 +24,9 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 		buttons = new HashMap<String, JButton>();
 		this.slider = slider;
 
+		for(String name: buttonNames){
+			this.add(name);
+		}
 	}
 
 	public void add(String label){
@@ -42,7 +46,7 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 	}
 
 	@Override
-	public synchronized void actionPerformed(ActionEvent e){
+	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
 		case "New Game":
 			Main.main(null);

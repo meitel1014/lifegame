@@ -41,9 +41,15 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 		}
 	}
 
-	//各セルの一辺の大きさ
+	// 各セルの一辺の大きさ
 	private int boxSize(){
-		return Math.min(getWidth() / m.getCols(), getHeight() / m.getRows());
+		return Math.min(getWidth() / m.getCols() - isFull(getWidth(), m.getCols()),
+				getHeight() / m.getRows() - isFull(getHeight(), m.getRows()));
+	}
+
+	//盤面を表示する領域の幅や高さがセルの列数や行数で割り切れると，右端や下端の線が表示されない問題の解決メソッド
+	private int isFull(int length, int cells){
+		return length % cells == 0? 1: 0;
 	}
 
 	// 盤面を画面中央に寄せるためx,y座標を端からずらす
@@ -86,19 +92,19 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 	private int prevY = -1;
 
 	private enum PrevEvent{
-		PRESS, DRAG, RELEASE
+		PRESS, DRAG
 	}
 
 	PrevEvent prevEvent;
 
-	private void mouseRecord(int x, int y, PrevEvent e){
+	private void recordMouse(int x, int y, PrevEvent e){
 		prevX = getXOnBoard(x);
 		prevY = getYOnBoard(y);
 		prevEvent = e;
 	}
 
 	private boolean isOutOfBounds(int x, int y){
-		return x < dx() || y < dy() || x >= getWidth() - dx() || y >= getHeight() - dy();
+		return x < dx() || y < dy() || x >= boxSize() * m.getCols() + dx() || y >= boxSize() * m.getRows() + dy();
 	}
 
 	@Override
@@ -107,7 +113,7 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 			return;
 		}
 		m.changeCellState(getXOnBoard(e.getX()), getYOnBoard(e.getY()));
-		mouseRecord(e.getX(), e.getY(), PrevEvent.PRESS);
+		recordMouse(e.getX(), e.getY(), PrevEvent.PRESS);
 	}
 
 	@Override
@@ -119,7 +125,7 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 		if(isPrevCell(e.getX(), e.getY())){
 			m.changeCellStateNoRecord(getXOnBoard(e.getX()), getYOnBoard(e.getY()));
 		}
-		mouseRecord(e.getX(), e.getY(), PrevEvent.DRAG);
+		recordMouse(e.getX(), e.getY(), PrevEvent.DRAG);
 	}
 
 	private boolean isPrevCell(int x, int y){

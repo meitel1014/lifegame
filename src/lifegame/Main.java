@@ -23,14 +23,13 @@ public class Main implements Runnable{
 
 		JFrame frame = new JFrame("Lifegame");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		BoardModel model = new BoardModel(init.getRows(), init.getCols());
 		JPanel base = new JPanel();
 		frame.setContentPane(base);
 		base.setPreferredSize(new Dimension(550, 400));// 希望サイズの指定
 		frame.setMinimumSize(new Dimension(550, 200));// 最小サイズの指定
 		base.setLayout(new BorderLayout());
 
+		BoardModel model = new BoardModel(init.getRows(), init.getCols());
 		BoardView view = new BoardView(model);
 		base.add(view, BorderLayout.CENTER);
 		model.addListener(view);
@@ -42,10 +41,6 @@ public class Main implements Runnable{
 		JSlider slider = new JSlider(0, 1000, 500);
 		ButtonManager buttons = new ButtonManager(model, buttonPanel, slider);
 		model.addListener(buttons);
-		String[] buttonNames = { "New Game", "Next", "Undo", "Auto" };
-		for(String name: buttonNames){
-			buttons.add(name);
-		}
 
 		buttonPanel.add(slider);
 		frame.addWindowListener(buttons);

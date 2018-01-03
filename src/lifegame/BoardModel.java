@@ -53,17 +53,31 @@ public class BoardModel{
 	}
 
 	public synchronized void next(){
-		record();
 		boolean[][] nextGen = new boolean[rows][cols];
 
-		for(int i = 0; i < rows; i++){
-			for(int j = 0; j < cols; j++){
-				nextGen[i][j] = nextGenJudge(i, j);
+		for(int y = 0; y < rows; y++){
+			for(int x = 0; x < cols; x++){
+				nextGen[y][x] = nextGenJudge(y, x);
 			}
 		}
 
-		cells = nextGen;
+		if(isChanged(nextGen)) {
+			record();
+			cells = nextGen;
+		}
 		fireUpdate();
+	}
+
+	private boolean isChanged(boolean[][] next) {
+		for(int y = 0; y < rows; y++){
+			for(int x = 0; x < cols; x++){
+				if(next[y][x] != cells[y][x]) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private boolean nextGenJudge(int y, int x){
@@ -114,7 +128,7 @@ public class BoardModel{
 		fireUpdate();
 	}
 
-	public boolean isUndoable(){
+	public synchronized boolean isUndoable(){
 		return !history.isEmpty();
 	}
 }
