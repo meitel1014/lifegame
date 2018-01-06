@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,15 +12,18 @@ import javax.swing.JSlider;
 
 public class ButtonManager implements ActionListener, BoardListener, WindowListener{
 	private BoardModel model;
+	private int autonum=0;
+	private int stopnum=0;
 	private JPanel buttonPanel;
 	private JSlider slider;
-	private Map<String, JButton> buttons= Collections.synchronizedMap(new HashMap<String, JButton>());;
+	private HashMap<String, JButton> buttons;
 	private AutoRunner auto;
 	private String[] buttonNames = { "New Game", "Next", "Undo", "Auto" };
 
 	public ButtonManager(BoardModel model, JPanel panel, JSlider slider){
 		this.model = model;
 		this.buttonPanel = panel;
+		buttons = new HashMap<String, JButton>();
 		this.slider = slider;
 
 		for(String name: buttonNames){
@@ -42,12 +43,13 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 	}
 
 	@Override
-	public synchronized void updated(BoardModel m){
-		buttons.get("Undo").setEnabled(model.isUndoable());
+	public void updated(BoardModel m){
+		JButton undoButton=buttons.get("Undo");
+		undoButton.setEnabled(model.isUndoable());
 	}
 
 	@Override
-	public synchronized void actionPerformed(ActionEvent e){
+	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
 		case "New Game":
 			Main.main(null);
@@ -59,18 +61,22 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 			model.undo();
 			break;
 		case "Auto":
+			stopnum++;
 			JButton autoButton = buttons.get("Auto");
-			autoButton.setText("Stop");
+			autoButton.setText("Stop"+stopnum);
 			autoButton.setActionCommand("Stop");
+			autoButton.repaint();
 
 			auto = new AutoRunner(model, slider);
 			auto.start();
 
 			break;
 		case "Stop":
+			autonum++;
 			JButton stopButton = buttons.get("Auto");
-			stopButton.setText("Auto");
+			stopButton.setText("Auto"+autonum);
 			stopButton.setActionCommand("Auto");
+			stopButton.repaint();
 
 			auto.interrupt();
 
