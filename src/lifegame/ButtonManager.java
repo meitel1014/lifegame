@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,14 +16,13 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 	private BoardModel model;
 	private JPanel buttonPanel;
 	private JSlider slider;
-	private HashMap<String, JButton> buttons;
+	private Map<String, JButton> buttons= Collections.synchronizedMap(new HashMap<String, JButton>());;
 	private AutoRunner auto;
 	private String[] buttonNames = { "New Game", "Next", "Undo", "Auto" };
 
 	public ButtonManager(BoardModel model, JPanel panel, JSlider slider){
 		this.model = model;
 		this.buttonPanel = panel;
-		buttons = new HashMap<String, JButton>();
 		this.slider = slider;
 
 		for(String name: buttonNames){
@@ -46,7 +47,7 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e){
+	public synchronized void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
 		case "New Game":
 			Main.main(null);
