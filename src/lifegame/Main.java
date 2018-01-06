@@ -36,7 +36,6 @@ public class Main implements Runnable{
 		JPanel buttonPanel = new JPanel(); // ボタン用パネルを作成し
 		base.add(buttonPanel, BorderLayout.SOUTH); // base の下端に配置する
 		buttonPanel.setLayout(new FlowLayout()); // java.awt.FlowLayout を設定
-
 		JSlider slider = new JSlider(0, 1000, 500);
 		ButtonManager buttons = new ButtonManager(model, buttonPanel, slider);
 		model.addListener(buttons);

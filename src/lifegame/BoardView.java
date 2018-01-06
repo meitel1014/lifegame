@@ -104,7 +104,7 @@ public class BoardView extends JPanel implements BoardListener, MouseListener, M
 	}
 
 	private boolean isOutOfBounds(int x, int y){
-		return x < dx() || y < dy() || x >= boxSize() * m.getCols() + dx() || y >= boxSize() * m.getRows() + dy();
+		return x < dx() || y < dy() || x >= getWidth() - dx() -1|| y >= getHeight() - dy()-1;
 	}
 
 	@Override

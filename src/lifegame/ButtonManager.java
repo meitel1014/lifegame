@@ -12,8 +12,6 @@ import javax.swing.JSlider;
 
 public class ButtonManager implements ActionListener, BoardListener, WindowListener{
 	private BoardModel model;
-	private int autonum=0;
-	private int stopnum=0;
 	private JPanel buttonPanel;
 	private JSlider slider;
 	private HashMap<String, JButton> buttons;
@@ -44,8 +42,7 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 
 	@Override
 	public void updated(BoardModel m){
-		JButton undoButton=buttons.get("Undo");
-		undoButton.setEnabled(model.isUndoable());
+		buttons.get("Undo").setEnabled(model.isUndoable());
 	}
 
 	@Override
@@ -61,28 +58,24 @@ public class ButtonManager implements ActionListener, BoardListener, WindowListe
 			model.undo();
 			break;
 		case "Auto":
-			stopnum++;
 			JButton autoButton = buttons.get("Auto");
-			autoButton.setText("Stop"+stopnum);
+			autoButton.setText("Stop");
 			autoButton.setActionCommand("Stop");
-			autoButton.repaint();
 
 			auto = new AutoRunner(model, slider);
 			auto.start();
 
 			break;
 		case "Stop":
-			autonum++;
 			JButton stopButton = buttons.get("Auto");
-			stopButton.setText("Auto"+autonum);
+			stopButton.setText("Auto");
 			stopButton.setActionCommand("Auto");
-			stopButton.repaint();
 
 			auto.interrupt();
 
 			break;
 		default:
-			System.out.println("Button error");
+			System.err.println("Button error");
 		}
 	}
 
