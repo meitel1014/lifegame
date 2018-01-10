@@ -28,7 +28,7 @@ public class Main implements Runnable{
 		frame.setMinimumSize(new Dimension(550, 200));// 最小サイズの指定
 		base.setLayout(new BorderLayout());
 
-		BoardModel model = new BoardModel(init.getRows(), init.getCols());
+		BoardModel model = new BoardModel(init.getCols(), init.getRows());
 		BoardView view = new BoardView(model);
 		base.add(view, BorderLayout.CENTER);
 		model.addListener(view);

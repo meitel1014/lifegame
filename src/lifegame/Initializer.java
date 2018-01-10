@@ -7,16 +7,7 @@ public class Initializer{
 
 	public boolean initialize(){
 		try{
-			String rowInput = JOptionPane.showInputDialog("Rows(10-100):", "15");
-			if(rowInput == null){
-				return false;
-			}
-			rows = Integer.parseInt(rowInput);
-			if(rows < 10 || rows > 100){
-				throw new NumberFormatException();
-			}
-
-			String colInput = JOptionPane.showInputDialog("Cols(10-100):", "10");
+			String colInput = JOptionPane.showInputDialog("Cols(10-100):", "15");
 			if(colInput == null){
 				return false;
 			}
@@ -24,9 +15,18 @@ public class Initializer{
 			if(cols < 10 || cols > 100){
 				throw new NumberFormatException();
 			}
+
+			String rowInput = JOptionPane.showInputDialog("Rows(10-100):", "10");
+			if(rowInput == null){
+				return false;
+			}
+			rows = Integer.parseInt(rowInput);
+			if(rows < 10 || rows > 100){
+				throw new NumberFormatException();
+			}
 		}catch(NumberFormatException e){
 			JOptionPane.showMessageDialog(null,
-					"Not appropriate input", "Error", JOptionPane.ERROR_MESSAGE);
+					"Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
